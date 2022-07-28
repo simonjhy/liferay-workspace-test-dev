@@ -8,6 +8,9 @@ copyTestModules {
 dependencies {
 	testCompile group: "com.liferay.portal", name: "release.portal.api"
 
+	testIntegrationCompile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.18.0'
+	testIntegrationCompile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.18.0'
+	testIntegrationCompile group: 'org.slf4j', name: 'log4j-over-slf4j', version: '1.7.25'
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.test", version: "default"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.test.integration", version: "default"
@@ -17,11 +20,8 @@ dependencies {
 	testIntegrationCompile project(":modules:sample:sample-api")
 	testIntegrationCompile project(":modules:sample:sample-service")
 
-	testModules group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge.connector", version: "1.0.0"
-	testModules group: "com.liferay", name: "com.liferay.sync.api", version: "6.2.1"
-	testModules group: "com.liferay", name: "com.liferay.sync.service", version: "4.0.9"
+	testModules group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge.connector", version: "1.0.1"
 	testModules group: "com.liferay.portal", name: "com.liferay.portal.test", version: "default"
-	testModules group: "com.liferay.portal", name: "com.liferay.portal.test.integration", version: "default"
 	testModules group: "org.apache.aries.jmx", name: "org.apache.aries.jmx.core", version: "1.1.7"
 }
 

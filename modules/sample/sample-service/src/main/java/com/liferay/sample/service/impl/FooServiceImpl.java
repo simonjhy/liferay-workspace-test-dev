@@ -20,17 +20,7 @@ import com.liferay.sample.service.base.FooServiceBaseImpl;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The implementation of the foo remote service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.sample.service.FooService</code> interface.
- *
- * <p>
- * This is a remote service. Methods of this service are expected to have security checks based on the propagated JAAS credentials because this service can be accessed remotely.
- * </p>
- *
  * @author Brian Wing Shun Chan
- * @see FooServiceBaseImpl
  */
 @Component(
 	property = {
@@ -39,11 +29,4 @@ import org.osgi.service.component.annotations.Component;
 	service = AopService.class
 )
 public class FooServiceImpl extends FooServiceBaseImpl {
-
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use <code>com.liferay.sample.service.FooServiceUtil</code> to access the foo remote service.
-	 */
-
 }

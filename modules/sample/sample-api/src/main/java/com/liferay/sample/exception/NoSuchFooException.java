@@ -11,17 +11,13 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
-
 package com.liferay.sample.exception;
 
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class NoSuchFooException extends NoSuchModelException {
 
 	public NoSuchFooException() {
@@ -31,12 +27,12 @@ public class NoSuchFooException extends NoSuchModelException {
 		super(msg);
 	}
 
-	public NoSuchFooException(String msg, Throwable cause) {
-		super(msg, cause);
+	public NoSuchFooException(String msg, Throwable throwable) {
+		super(msg, throwable);
 	}
 
-	public NoSuchFooException(Throwable cause) {
-		super(cause);
+	public NoSuchFooException(Throwable throwable) {
+		super(throwable);
 	}
 
 }

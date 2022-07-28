@@ -282,4 +282,7 @@ public interface FooModel
 	 */
 	public void setField5(String field5);
 
+	@Override
+	public Foo cloneWithOriginalValues();
+
 }

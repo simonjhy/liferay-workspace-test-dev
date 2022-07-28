@@ -14,23 +14,6 @@
 
 package com.liferay.sample.service.persistence.test;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -38,6 +21,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -54,6 +38,23 @@ import com.liferay.sample.model.Foo;
 import com.liferay.sample.service.FooLocalServiceUtil;
 import com.liferay.sample.service.persistence.FooPersistence;
 import com.liferay.sample.service.persistence.FooUtil;
+
+import java.io.Serializable;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @generated
@@ -440,17 +441,59 @@ public class FooPersistenceTest {
 
 		_persistence.clearCache();
 
-		Foo existingFoo = _persistence.findByPrimaryKey(newFoo.getPrimaryKey());
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newFoo.getPrimaryKey()));
+	}
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingFoo.getUuid(),
-				ReflectionTestUtil.invoke(
-					existingFoo, "getOriginalUuid", new Class<?>[0])));
+	@Test
+	public void testResetOriginalValuesWithDynamicQueryLoadFromDatabase()
+		throws Exception {
+
+		_testResetOriginalValuesWithDynamicQuery(true);
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQueryLoadFromSession()
+		throws Exception {
+
+		_testResetOriginalValuesWithDynamicQuery(false);
+	}
+
+	private void _testResetOriginalValuesWithDynamicQuery(boolean clearSession)
+		throws Exception {
+
+		Foo newFoo = addFoo();
+
+		if (clearSession) {
+			Session session = _persistence.openSession();
+
+			session.flush();
+
+			session.clear();
+		}
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Foo.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("fooId", newFoo.getFooId()));
+
+		List<Foo> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(Foo foo) {
 		Assert.assertEquals(
-			Long.valueOf(existingFoo.getGroupId()),
+			foo.getUuid(),
+			ReflectionTestUtil.invoke(
+				foo, "getColumnOriginalValue", new Class<?>[] {String.class},
+				"uuid_"));
+		Assert.assertEquals(
+			Long.valueOf(foo.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
-				existingFoo, "getOriginalGroupId", new Class<?>[0]));
+				foo, "getColumnOriginalValue", new Class<?>[] {String.class},
+				"groupId"));
 	}
 
 	protected Foo addFoo() throws Exception {

@@ -14,8 +14,6 @@
 
 package com.liferay.sample.model.impl;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 import com.liferay.sample.model.Foo;
 import com.liferay.sample.service.FooLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.sample.service.FooLocalServiceUtil;
  * @see Foo
  * @generated
  */
-@ProviderType
 public abstract class FooBaseImpl extends FooModelImpl implements Foo {
 
 	/*

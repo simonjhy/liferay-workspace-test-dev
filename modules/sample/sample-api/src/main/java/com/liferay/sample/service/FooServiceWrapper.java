@@ -16,8 +16,6 @@ package com.liferay.sample.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 /**
  * Provides a wrapper for {@link FooService}.
  *
@@ -25,9 +23,12 @@ import org.osgi.annotation.versioning.ProviderType;
  * @see FooService
  * @generated
  */
-@ProviderType
 public class FooServiceWrapper
 	implements FooService, ServiceWrapper<FooService> {
+
+	public FooServiceWrapper() {
+		this(null);
+	}
 
 	public FooServiceWrapper(FooService fooService) {
 		_fooService = fooService;

@@ -14,18 +14,17 @@
 
 package com.liferay.sample.model.impl;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.util.Date;
-
-import org.osgi.annotation.versioning.ProviderType;
-
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.sample.model.Foo;
+
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+import java.util.Date;
 
 /**
  * The cache model class for representing Foo in entity cache.
@@ -33,20 +32,19 @@ import com.liferay.sample.model.Foo;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class FooCacheModel implements CacheModel<Foo>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof FooCacheModel)) {
+		if (!(object instanceof FooCacheModel)) {
 			return false;
 		}
 
-		FooCacheModel fooCacheModel = (FooCacheModel)obj;
+		FooCacheModel fooCacheModel = (FooCacheModel)object;
 
 		if (fooId == fooCacheModel.fooId) {
 			return true;

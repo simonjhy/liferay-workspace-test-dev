@@ -25,10 +25,14 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.sample.model.Foo;
 import com.liferay.sample.service.FooService;
+import com.liferay.sample.service.FooServiceUtil;
 import com.liferay.sample.service.persistence.FooPersistence;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -44,13 +48,18 @@ import org.osgi.service.component.annotations.Reference;
  */
 public abstract class FooServiceBaseImpl
 	extends BaseServiceImpl
-	implements FooService, AopService, IdentifiableOSGiService {
+	implements AopService, FooService, IdentifiableOSGiService {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>FooService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.sample.service.FooServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>FooService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>FooServiceUtil</code>.
 	 */
+	@Deactivate
+	protected void deactivate() {
+		_setServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {FooService.class, IdentifiableOSGiService.class};
@@ -59,6 +68,8 @@ public abstract class FooServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		fooService = (FooService)aopProxy;
+
+		_setServiceUtilService(fooService);
 	}
 
 	/**
@@ -98,8 +109,21 @@ public abstract class FooServiceBaseImpl
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(FooService fooService) {
+		try {
+			Field field = FooServiceUtil.class.getDeclaredField("_service");
+
+			field.setAccessible(true);
+
+			field.set(null, fooService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

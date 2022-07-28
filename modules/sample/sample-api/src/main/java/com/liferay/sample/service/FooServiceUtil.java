@@ -14,11 +14,6 @@
 
 package com.liferay.sample.service;
 
-import org.osgi.annotation.versioning.ProviderType;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for Foo. This utility wraps
  * <code>com.liferay.sample.service.impl.FooServiceImpl</code> and is an
@@ -31,7 +26,6 @@ import org.osgi.util.tracker.ServiceTracker;
  * @see FooService
  * @generated
  */
-@ProviderType
 public class FooServiceUtil {
 
 	/*
@@ -45,26 +39,14 @@ public class FooServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static FooService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<FooService, FooService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(FooService.class);
-
-		ServiceTracker<FooService, FooService> serviceTracker =
-			new ServiceTracker<FooService, FooService>(
-				bundle.getBundleContext(), FooService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile FooService _service;
 
 }
